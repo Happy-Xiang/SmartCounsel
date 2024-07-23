@@ -11,6 +11,7 @@ load_dotenv()
 APP_ID = os.getenv("APP_ID")
 AUTHORIZATION_TOKEN = os.getenv("AUTHORIZATION_TOKEN")
 
+
 # 定义全局变量来存储会话 ID
 conversation_id = None
 
