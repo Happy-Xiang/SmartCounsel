@@ -1,6 +1,16 @@
 import gradio as gr
 import requests
 import json
+from dotenv import load_dotenv
+import os
+
+# 加载 .env 文件中的环境变量
+load_dotenv()
+
+# 从环境变量中获取敏感信息
+APP_ID = os.getenv("APP_ID")
+AUTHORIZATION_TOKEN = os.getenv("AUTHORIZATION_TOKEN")
+
 
 # 定义全局变量来存储会话 ID
 conversation_id = None
@@ -11,11 +21,11 @@ def create_new_conversation():
     url = "https://qianfan.baidubce.com/v2/app/conversation"
 
     payload = json.dumps({
-        "app_id": "11a4259d-63ab-44b4-87b6-33e9910dd79f"
+        "app_id": APP_ID
     })
     headers = {
         'Content-Type': 'application/json',
-        'X-Appbuilder-Authorization': 'Bearer bce-v3/ALTAK-M56WzZjlyzqzFnjMoAHIA/041fae58d1323581311b9b68211981fcfd16f5cc'
+        'X-Appbuilder-Authorization': f'Bearer {AUTHORIZATION_TOKEN}'
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -33,14 +43,14 @@ def chatbot(query, history):
     url = "https://qianfan.baidubce.com/v2/app/conversation/runs"
 
     payload = json.dumps({
-        "app_id": "11a4259d-63ab-44b4-87b6-33e9910dd79f",
+        "app_id": APP_ID,
         "query": query,
         "stream": False,
         "conversation_id": conversation_id
     })
     headers = {
         'Content-Type': 'application/json',
-        'X-Appbuilder-Authorization': 'Bearer bce-v3/ALTAK-M56WzZjlyzqzFnjMoAHIA/041fae58d1323581311b9b68211981fcfd16f5cc'
+        'X-Appbuilder-Authorization': f'Bearer {AUTHORIZATION_TOKEN}'
     }
 
     response = requests.post(url, headers=headers, data=payload)
@@ -93,4 +103,3 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
         server_port=7860
     )
-
